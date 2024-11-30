@@ -1,0 +1,26 @@
+{
+  "name": "rest-apis-video-files",
+  "version": "1.0.0",
+  "description": "A RESTful API service for handling video uploads, trimming, merging, and sharing with authentication and time-based expiry features.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raghavg27/rest-apis-video-files.git"
+  },
+  "keywords": [
+    "video",
+    "api",
+    "rest",
+    "jwt",
+    "sqlite"
+  ],
+  "author": "Raghav Gupta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/raghavg27/rest-apis-video-files/issues"
+  },
+  "homepage": "https://github.com/raghavg27/rest-apis-video-files#readme"
+}
