@@ -1,34 +1,34 @@
-# **REST APIs for Video Files**
+
+# 🎥 **REST APIs for Video Files**
 
 ### **Overview**
-This project provides REST APIs to manage video files. Users can upload, trim, merge, and share video files via secure endpoints. It supports link sharing with time-based expiry and includes size and duration validation for uploaded videos.
+This project provides REST APIs to manage video files. Users can upload, trim, merge, and share video files via secure endpoints. 
+It supports link sharing with time-based expiry and includes size and duration validation for uploaded videos.
 
 ---
 
-## **Table of Contents**
+## 📚 **Table of Contents**
 
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Getting Started](#getting-started)
-- [API Endpoints](#api-endpoints)
-- [Environment Variables](#environment-variables)
-- [Testing](#testing)
-
-
+- [✨ Features](#features)
+- [🛠 Technologies Used](#technologies-used)
+- [🚀 Getting Started](#getting-started)
+- [🌐 API Endpoints](#api-endpoints)
+- [🔑 Environment Variables](#environment-variables)
+- [🧪 Testing](#testing)
 
 ---
 
-## **Features**
+## ✨ **Features**
 
-- **Video Upload**: Upload video files with configurable size and duration limits.
-- **Video Trimming**: Trim videos from the start or end.
-- **Video Merging**: Merge multiple videos into a single file.
-- **Link Sharing**: Generate sharable links for videos with time-based expiry.
-- **Authentication**: API calls require a static token for security.
+- 📤 **Video Upload**: Upload video files with configurable size and duration limits.
+- ✂️ **Video Trimming**: Trim videos from the start or end.
+- 🔗 **Video Merging**: Merge multiple videos into a single file.
+- 🕒 **Link Sharing**: Generate sharable links for videos with time-based expiry.
+- 🔒 **Authentication**: API calls require a static token for security.
 
 ---
 
-## **Technologies Used**
+## 🛠 **Technologies Used**
 
 - **Node.js**: JavaScript runtime for building scalable server-side applications.
 - **Express.js**: Web framework for API development.
@@ -40,12 +40,12 @@ This project provides REST APIs to manage video files. Users can upload, trim, m
 
 ---
 
-## **Getting Started**
+## 🚀 **Getting Started**
 
 ### **Prerequisites**
 
-- **Node.js** (v14 or later)
-- **npm** (Node package manager)
+- 🖥 **Node.js** (v14 or later)
+- 📦 **npm** (Node package manager)
 
 ### **Installation**
 
@@ -72,9 +72,9 @@ This project provides REST APIs to manage video files. Users can upload, trim, m
 
 5. Create a `.env` file in the project root and add the following variables:
 
-```env
-VALID_TOKENS=videoverse  # Static tokens for API authentication
-```
+    ```bash
+    VALID_TOKENS=videoverse  # Static token for API authentication
+    ```
 
 6. Start the server:
    ```bash
@@ -85,9 +85,9 @@ The server will run on `http://localhost:9000`.
 
 ---
 
-## **API Endpoints**
+## 🌐 **API Endpoints**
 
-Import postman collection for API Docs - rest-apis-video-files.postman_collection
+Import Postman collection for API docs: `rest-apis-video-files.postman_collection.json`
 
 ### **1. Video Upload**
 - **URL**: `POST /videos/upload`
@@ -95,8 +95,8 @@ Import postman collection for API Docs - rest-apis-video-files.postman_collectio
 - **Headers**: `Authorization: your_static_api_token`
 - **Body (form-data)**: `video` (file)
 - **Response**:
-  - `201 Created`: Video uploaded successfully.
-  - `400 Bad Request`: File missing, exceeds size limits, or duration invalid.
+  - ✅ `201 Created`: Video uploaded successfully.
+  - ⚠️ `400 Bad Request`: File missing, exceeds size limits, or duration invalid.
 
 ---
 
@@ -113,8 +113,8 @@ Import postman collection for API Docs - rest-apis-video-files.postman_collectio
   }
   ```
 - **Response**:
-  - `200 OK`: Video trimmed successfully.
-  - `400 Bad Request`: Missing or invalid parameters.
+  - ✅ `200 OK`: Video trimmed successfully.
+  - ⚠️ `400 Bad Request`: Missing or invalid parameters.
 
 ---
 
@@ -129,8 +129,8 @@ Import postman collection for API Docs - rest-apis-video-files.postman_collectio
   }
   ```
 - **Response**:
-  - `200 OK`: Videos merged successfully.
-  - `404 Not Found`: One or more videos not found.
+  - ✅ `200 OK`: Videos merged successfully.
+  - ⚠️ `404 Not Found`: One or more videos not found.
 
 ---
 
@@ -146,8 +146,8 @@ Import postman collection for API Docs - rest-apis-video-files.postman_collectio
   }
   ```
 - **Response**:
-  - `200 OK`: Link generated successfully.
-  - `404 Not Found`: Video not found.
+  - ✅ `200 OK`: Link generated successfully.
+  - ⚠️ `404 Not Found`: Video not found.
 
 ---
 
@@ -155,13 +155,13 @@ Import postman collection for API Docs - rest-apis-video-files.postman_collectio
 - **URL**: `GET /videos/shared/:token`
 - **Description**: Access a shared video using its token.
 - **Response**:
-  - `200 OK`: Shared video details.
-  - `404 Not Found`: Invalid or expired token.
-  - `410 Gone`: Link has expired.
+  - ✅ `200 OK`: Shared video details.
+  - ⚠️ `404 Not Found`: Invalid or expired token.
+  - ⏳ `410 Gone`: Link has expired.
 
 ---
 
-## **Testing**
+## 🧪 **Testing**
 
 ### **Run Tests**
 This project uses `Jest` for testing. To run the tests:
