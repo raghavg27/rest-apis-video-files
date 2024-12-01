@@ -2,9 +2,18 @@
 const express = require("express");
 const multer = require("multer");
 const { PrismaClient } = require("@prisma/client");
-const { getVideoDuration, trimVideo } = require("../utils/videoUtils");
+const {
+  getVideoDuration,
+  trimVideo,
+  mergeVideos,
+} = require("../utils/videoUtils");
 const auth = require("../middleware/auth");
 const router = express.Router();
+const fs = require("fs");
+
+const ffmpeg = require("fluent-ffmpeg");
+const ffmpegStatic = require("ffmpeg-static");
+ffmpeg.setFfmpegPath(ffmpegStatic);
 
 // Initialisations
 const upload = multer({ dest: "./uploads/" });
@@ -109,6 +118,58 @@ router.post("/trim", auth, async (req, res) => {
     res.json({ message: "Video trimmed", path: outputPath });
   } catch (error) {
     console.error(error);
+    res.status(500).send({
+      error: "Internal server error, please try again later",
+      message: `${error.message}`,
+    });
+  }
+});
+
+// Merge videos route
+router.post("/merge", auth, async (req, res) => {
+  const { videoIds } = req.body;
+
+  // Validate input
+  if (!videoIds || !Array.isArray(videoIds) || videoIds.length === 0) {
+    return res
+      .status(400)
+      .json({ message: "videoIds must be a non-empty array!" });
+  }
+
+  try {
+    // Fetch video records from the database
+    const videos = await prisma.videos.findMany({
+      where: { id: { in: videoIds } },
+    });
+
+    // Check if all requested videos are found
+    if (videos.length !== videoIds.length) {
+      return res.status(404).json({ message: "One or more videos not found" });
+    }
+
+    // Sort videos based on the order of IDs provided in videoIds
+    const sortedVideos = videoIds.map((id) =>
+      videos.find((video) => video.id === id)
+    );
+
+    // Validate video file paths
+    const paths = sortedVideos.map((v) => v.file_path);
+    for (const path of paths) {
+      if (!fs.existsSync(path)) {
+        return res.status(400).json({
+          message: `Video file not found: ${path}`,
+        });
+      }
+    }
+
+    // Generate output path
+    const outputPath = `uploads/merged-${Date.now()}.mp4`;
+
+    // Perform the merge operation
+    await mergeVideos(paths, outputPath);
+    res.json({ message: "Videos merged successfully", path: outputPath });
+  } catch (error) {
+    console.error("Error merging videos:", error);
     res.status(500).send({
       error: "Internal server error, please try again later",
       message: `${error.message}`,
