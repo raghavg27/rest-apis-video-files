@@ -1,3 +1,6 @@
+# Uploads folder containing videos
+uploads/
+
 # Node.js dependencies
 node_modules/
 
