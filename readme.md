@@ -46,13 +46,12 @@ This project provides REST APIs to manage video files. Users can upload, trim, m
 
 - **Node.js** (v14 or later)
 - **npm** (Node package manager)
-- **FFmpeg** (Ensure `ffmpeg` and `ffprobe` are installed)
 
 ### **Installation**
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/rest-apis-video-files.git
+   git clone https://github.com/raghavg27/rest-apis-video-files.git
    cd rest-apis-video-files
    ```
 
@@ -71,7 +70,13 @@ This project provides REST APIs to manage video files. Users can upload, trim, m
    mkdir uploads
    ```
 
-5. Start the server:
+5. Create a `.env` file in the project root and add the following variables:
+
+```env
+VALID_TOKENS=videoverse  # Static tokens for API authentication
+```
+
+6. Start the server:
    ```bash
    npm start
    ```
@@ -81,6 +86,8 @@ The server will run on `http://localhost:9000`.
 ---
 
 ## **API Endpoints**
+
+Import postman collection for API Docs - rest-apis-video-files.postman_collection
 
 ### **1. Video Upload**
 - **URL**: `POST /videos/upload`
@@ -151,17 +158,6 @@ The server will run on `http://localhost:9000`.
   - `200 OK`: Shared video details.
   - `404 Not Found`: Invalid or expired token.
   - `410 Gone`: Link has expired.
-
----
-
-## **Environment Variables**
-
-Create a `.env` file in the project root and add the following variables:
-
-```env
-DATABASE_URL="file:./dev.db"  # SQLite database path
-VALID_TOKENS=["your_static_api_token"]  # Static tokens for API authentication
-```
 
 ---
 
