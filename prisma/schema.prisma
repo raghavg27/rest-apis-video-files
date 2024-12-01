@@ -10,7 +10,7 @@ datasource db {
 model shared_links {
   id         Int      @id @default(autoincrement())
   video_id   Int
-  token      String
+  token      String   
   expires_at DateTime
   videos     videos   @relation(fields: [video_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }

@@ -10,6 +10,7 @@ const {
 const auth = require("../middleware/auth");
 const router = express.Router();
 const fs = require("fs");
+const { generateToken } = require("../utils/tokenUtils");
 
 const ffmpeg = require("fluent-ffmpeg");
 const ffmpegStatic = require("ffmpeg-static");
@@ -174,6 +175,85 @@ router.post("/merge", auth, async (req, res) => {
       error: "Internal server error, please try again later",
       message: `${error.message}`,
     });
+  }
+});
+
+// Share video link route
+router.post("/share", auth, async (req, res) => {
+  const { videoId, expiryHours } = req.body;
+
+  // Validate input
+  if (!videoId || !expiryHours) {
+    return res
+      .status(400)
+      .json({ message: "videoId and expiryHours are required!" });
+  }
+
+  const video = await prisma.videos.findUnique({ where: { id: videoId } });
+
+  if (!video) {
+    return res.status(404).json({ message: "Video not found" });
+  }
+
+  try {
+    // Generate a unique token and expiry time
+    const token = generateToken();
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + expiryHours);
+
+    // Store the shared link in the database
+    const sharedLink = await prisma.shared_links.create({
+      data: {
+        video_id: video.id,
+        token,
+        expires_at: expiresAt,
+      },
+    });
+
+    res.json({
+      message: "Link generated successfully",
+      link: `http://localhost:9000/videos/shared/${sharedLink.token}`,
+      expiresAt,
+    });
+  } catch (error) {
+    console.error("Error generating shared link:", error);
+    res.status(500).send({ error: "Internal server error" });
+  }
+});
+
+// Access shared video link route
+router.get("/shared/:token", async (req, res) => {
+  const { token } = req.params;
+
+  try {
+    // Find the shared link using findFirst
+    const sharedLink = await prisma.shared_links.findFirst({
+      where: { token }, // Find the first shared link with this token
+      include: { videos: true },
+    });
+
+    if (!sharedLink) {
+      return res.status(404).json({ message: "Invalid or expired link" });
+    }
+
+    // Check if the link has expired
+    const now = new Date();
+    if (sharedLink.expiresAt < now) {
+      return res.status(410).json({ message: "This link has expired" });
+    }
+
+    // Respond with video details
+    res.json({
+      message: "Shared video link is valid",
+      video: {
+        id: sharedLink.videos.id,
+        file_path: sharedLink.videos.file_path,
+        original_name: sharedLink.videos.original_name,
+      },
+    });
+  } catch (error) {
+    console.error("Error accessing shared link:", error);
+    res.status(500).send({ error: "Internal server error" });
   }
 });
 
