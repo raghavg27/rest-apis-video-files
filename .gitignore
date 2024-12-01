@@ -1,0 +1,11 @@
+# Node.js dependencies
+node_modules/
+
+# OS-generated files
+.DS_Store
+
+# Logs
+logs/
+*.log
+*.log.*
+npm-debug.log*
