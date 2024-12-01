@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "f5cc2b44-b544-4a2a-94e3-8422324c52b0",
+		"name": "rest-apis-video-files",
+		"description": "This collection provides APIs for managing video files, including uploading, trimming, merging, and sharing videos. Each API endpoint is secured using static API tokens.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "36032984"
+	},
+	"item": [
+		{
+			"name": "Ping server",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{baseurl}}/",
+				"description": "This request lets you check if server is up and responding well."
+			},
+			"response": []
+		},
+		{
+			"name": "Upload Video",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "video",
+							"type": "file",
+							"src": "/Users/raghavgupta/Downloads/vid2.mp4"
+						}
+					]
+				},
+				"url": "{{baseurl}}/videos/upload",
+				"description": "Upload video using this request."
+			},
+			"response": []
+		},
+		{
+			"name": "Trim Video",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"videoId\" : 7,\n    \"trimFrom\" : \"start\",\n    \"trimDuration\" : 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseurl}}/videos/trim",
+				"description": "This request lets you trim video based on duration and position provided."
+			},
+			"response": []
+		},
+		{
+			"name": "Merge Videos",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"videoIds\" : [9, 8]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseurl}}/videos/merge",
+				"description": "This request lets you merge two video by providing their ids."
+			},
+			"response": []
+		},
+		{
+			"name": "Share Video",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"videoId\": 1,\n    \"expiryHours\": 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseurl}}/videos/share",
+				"description": "This request lets you generate a shareable link of a video by providing video id and expiry hours."
+			},
+			"response": []
+		}
+	]
+}
